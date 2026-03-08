@@ -1,9 +1,10 @@
 import {Link} from '@/i18n/navigation';
 import {SelectLanguage} from "@/components/SelectLanguage";
+import {ThemeToggle} from "@/components/ThemeToggle";
 
 export const Header = () => {
     return (
-        <header className='container mx-auto mb-7 flex justify-between'>
+        <header className='container mx-auto mb-7 flex items-center justify-between py-4'>
             <div className='flex items-center gap-5'>
                 <Link
                     href='/'
@@ -19,7 +20,10 @@ export const Header = () => {
                 </Link>
             </div>
 
-            <SelectLanguage/>
+            <div className='flex items-center gap-3'>
+                <SelectLanguage/>
+                <ThemeToggle/>
+            </div>
         </header>
     );
 };
