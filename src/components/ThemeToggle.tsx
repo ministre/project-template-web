@@ -12,6 +12,14 @@ export const ThemeToggle = () => {
         // Dark theme by default if no saved preference
         const initialDark = savedTheme !== 'light';
         setIsDark(initialDark);
+        
+        // Ensure the class is applied (in case inline script didn't run or was cleared)
+        if (initialDark) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        
         setMounted(true);
     }, []);
 
