@@ -39,8 +39,20 @@ export default async function RootLayout({children, params}: Props) {
 
     const messages = await getMessages();
 
+    const themeScript = `
+      (function() {
+        var theme = localStorage.getItem('theme');
+        if (theme !== 'light') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    `;
+
     return (
-        <html lang={locale}>
+        <html lang={locale} suppressHydrationWarning>
+        <head>
+            <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        </head>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
             {children}
