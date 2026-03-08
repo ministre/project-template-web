@@ -1,0 +1,9 @@
+{
+  "HomePage": {
+    "title": "Home Page",
+    "test": "Button"
+  },
+  "UserProfilePage": {
+    "title": "User Profile"
+  }
+}
