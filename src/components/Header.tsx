@@ -22,20 +22,20 @@ export const Header = () => {
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
-                            <Link href='/' legacyBehavior passHref>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            <NavigationMenuLink asChild>
+                                <Link href='/' className={navigationMenuTriggerStyle()}>
                                     <Home className="mr-2 h-4 w-4" />
                                     {t("home")}
-                                </NavigationMenuLink>
-                            </Link>
+                                </Link>
+                            </NavigationMenuLink>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href='/profile' legacyBehavior passHref>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            <NavigationMenuLink asChild>
+                                <Link href='/profile' className={navigationMenuTriggerStyle()}>
                                     <User className="mr-2 h-4 w-4" />
                                     {t("profile")}
-                                </NavigationMenuLink>
-                            </Link>
+                                </Link>
+                            </NavigationMenuLink>
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
