@@ -1,28 +1,46 @@
+"use client";
+
 import {Link} from '@/i18n/navigation';
 import {SelectLanguage} from "@/components/SelectLanguage";
 import {ThemeToggle} from "@/components/ThemeToggle";
+import {
+    NavigationMenu,
+    NavigationMenuList,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import {Home, User} from "lucide-react";
 
 export const Header = () => {
     return (
-        <header className='container mx-auto mb-7 flex items-center justify-between py-4'>
-            <div className='flex items-center gap-5'>
-                <Link
-                    href='/'
-                    className='text-xl font-medium hover:underline hover:font-bold'
-                >
-                    Home
-                </Link>
-                <Link
-                    href='/profile'
-                    className='text-xl font-medium hover:underline hover:font-bold'
-                >
-                    Profile
-                </Link>
-            </div>
+        <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+            <div className='container mx-auto flex h-14 items-center justify-between px-4'>
+                <NavigationMenu>
+                    <NavigationMenuList>
+                        <NavigationMenuItem>
+                            <Link href='/' legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    <Home className="mr-2 h-4 w-4" />
+                                    Home
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <Link href='/profile' legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    <User className="mr-2 h-4 w-4" />
+                                    Profile
+                                </NavigationMenuLink>
+                            </Link>
+                        </NavigationMenuItem>
+                    </NavigationMenuList>
+                </NavigationMenu>
 
-            <div className='flex items-center gap-3'>
-                <SelectLanguage/>
-                <ThemeToggle/>
+                <div className='flex items-center gap-2'>
+                    <SelectLanguage/>
+                    <ThemeToggle/>
+                </div>
             </div>
         </header>
     );
