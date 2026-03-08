@@ -20,6 +20,7 @@ export const SelectLanguage = () => {
         <select
             onChange={e => changeLanguage(e.target.value)}
             value={currentLocale}
+            className='rounded-md border border-gray-300 bg-white px-3 py-2 text-black dark:border-gray-600 dark:bg-black dark:text-white'
         >
             <option value='ru'>Russian</option>
             <option value='en'>English</option>
