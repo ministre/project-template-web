@@ -10,9 +10,9 @@ export default async function RootLayout({
     // const {locale} = await params;
 
     return (
-        <div className='min-h-screen pt-5'>
+        <div className='min-h-screen'>
             <Header/>
-            <main className='container mx-auto'>{children}</main>
+            <main className='w-full px-4'>{children}</main>
         </div>
     );
 }
