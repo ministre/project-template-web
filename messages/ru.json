@@ -5,5 +5,9 @@
   },
   "UserProfilePage": {
     "title": "Профиль пользователя"
+  },
+  "Navigation": {
+    "home": "Главная",
+    "profile": "Профиль"
   }
 }
