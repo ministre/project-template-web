@@ -5,5 +5,9 @@
   },
   "UserProfilePage": {
     "title": "User Profile"
+  },
+  "Navigation": {
+    "home": "Home",
+    "profile": "Profile"
   }
 }

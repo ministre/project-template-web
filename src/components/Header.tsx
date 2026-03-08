@@ -11,8 +11,11 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {Home, User} from "lucide-react";
+import {useTranslations} from "next-intl";
 
 export const Header = () => {
+    const t = useTranslations("Navigation");
+    
     return (
         <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
             <div className='container mx-auto flex h-14 items-center justify-between px-4'>
@@ -22,7 +25,7 @@ export const Header = () => {
                             <Link href='/' legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     <Home className="mr-2 h-4 w-4" />
-                                    Home
+                                    {t("home")}
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
@@ -30,7 +33,7 @@ export const Header = () => {
                             <Link href='/profile' legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     <User className="mr-2 h-4 w-4" />
-                                    Profile
+                                    {t("profile")}
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
