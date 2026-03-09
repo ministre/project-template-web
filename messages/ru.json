@@ -39,6 +39,7 @@
   "DebugPage": {
     "title": "Debug",
     "description": "Инструменты отладки",
+    "accessToken": "Access Token",
     "refreshToken": "Обновить токен",
     "refreshing": "Обновление...",
     "refreshSuccess": "Токен успешно обновлен",
