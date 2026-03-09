@@ -31,10 +31,10 @@
   },
   "Navigation": {
     "home": "Home",
+    "debug": "Debug",
     "profile": "Profile",
     "login": "Login",
-    "logout": "Logout",
-    "debug": "Debug"
+    "logout": "Logout"
   },
   "DebugPage": {
     "title": "Debug",

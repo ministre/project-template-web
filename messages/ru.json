@@ -31,10 +31,10 @@
   },
   "Navigation": {
     "home": "Главная",
+    "debug": "Дебаг",
     "profile": "Профиль",
     "login": "Войти",
-    "logout": "Выйти",
-    "debug": "Debug"
+    "logout": "Выйти"
   },
   "DebugPage": {
     "title": "Debug",
