@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect} from "react";
+import {useState, useEffect, useSyncExternalStore} from "react";
 import {Link, useRouter} from '@/i18n/navigation';
 import {SelectLanguage} from "@/components/SelectLanguage";
 import {ThemeToggle} from "@/components/ThemeToggle";
@@ -13,40 +13,49 @@ import {
 } from "@/components/ui/navigation-menu";
 import {Home, User, LogOut, Bug} from "lucide-react";
 import {useTranslations} from "next-intl";
-import {useAuth} from "@/hooks/useAuth";
+
+// Simple token check without hooks dependency
+function getAccessToken(): string | null {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("accessToken");
+}
+
+function subscribeToStorage(callback: () => void) {
+    window.addEventListener("storage", callback);
+    // Custom event for same-tab updates
+    window.addEventListener("tokenChanged", callback);
+    return () => {
+        window.removeEventListener("storage", callback);
+        window.removeEventListener("tokenChanged", callback);
+    };
+}
+
+function getSnapshot(): boolean {
+    return !!getAccessToken();
+}
+
+function getServerSnapshot(): boolean {
+    return false;
+}
 
 export const Header = () => {
     const t = useTranslations("Navigation");
-    const { logout } = useAuth();
     const router = useRouter();
-    const [hasToken, setHasToken] = useState(false);
     const [mounted, setMounted] = useState(false);
+    
+    const hasToken = useSyncExternalStore(subscribeToStorage, getSnapshot, getServerSnapshot);
 
     useEffect(() => {
         setMounted(true);
-        const checkToken = () => {
-            const token = localStorage.getItem("accessToken");
-            setHasToken(!!token);
-        };
-        
-        checkToken();
-        
-        // Listen for storage changes (e.g., logout in another tab)
-        window.addEventListener("storage", checkToken);
-        
-        // Check periodically for token changes
-        const intervalId = setInterval(checkToken, 500);
-        
-        return () => {
-            window.removeEventListener("storage", checkToken);
-            clearInterval(intervalId);
-        };
     }, []);
 
     const handleLogout = () => {
-        logout();
-        setHasToken(false);
-        router.push("/");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("accessTokenExpiration");
+        localStorage.removeItem("user");
+        // Dispatch custom event for same-tab updates
+        window.dispatchEvent(new Event("tokenChanged"));
+        router.push("/login");
     };
     
     return (
