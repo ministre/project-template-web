@@ -33,6 +33,15 @@
     "home": "Home",
     "profile": "Profile",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "debug": "Debug"
+  },
+  "DebugPage": {
+    "title": "Debug",
+    "description": "Debugging tools",
+    "refreshToken": "Refresh Token",
+    "refreshing": "Refreshing...",
+    "refreshSuccess": "Token refreshed successfully",
+    "refreshError": "Failed to refresh token"
   }
 }
