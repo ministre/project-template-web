@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect, useSyncExternalStore} from "react";
+import {useState, useEffect} from "react";
 import {Link, useRouter} from '@/i18n/navigation';
 import {SelectLanguage} from "@/components/SelectLanguage";
 import {ThemeToggle} from "@/components/ThemeToggle";
@@ -14,39 +14,29 @@ import {
 import {Home, User, LogOut, Bug} from "lucide-react";
 import {useTranslations} from "next-intl";
 
-// Simple token check without hooks dependency
-function getAccessToken(): string | null {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("accessToken");
-}
-
-function subscribeToStorage(callback: () => void) {
-    window.addEventListener("storage", callback);
-    // Custom event for same-tab updates
-    window.addEventListener("tokenChanged", callback);
-    return () => {
-        window.removeEventListener("storage", callback);
-        window.removeEventListener("tokenChanged", callback);
-    };
-}
-
-function getSnapshot(): boolean {
-    return !!getAccessToken();
-}
-
-function getServerSnapshot(): boolean {
-    return false;
-}
-
 export const Header = () => {
     const t = useTranslations("Navigation");
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
-    
-    const hasToken = useSyncExternalStore(subscribeToStorage, getSnapshot, getServerSnapshot);
+    const [hasToken, setHasToken] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        // Check token on mount
+        setHasToken(!!localStorage.getItem("accessToken"));
+        
+        // Subscribe to changes
+        const handleTokenChange = () => {
+            setHasToken(!!localStorage.getItem("accessToken"));
+        };
+        
+        window.addEventListener("storage", handleTokenChange);
+        window.addEventListener("tokenChanged", handleTokenChange);
+        
+        return () => {
+            window.removeEventListener("storage", handleTokenChange);
+            window.removeEventListener("tokenChanged", handleTokenChange);
+        };
     }, []);
 
     const handleLogout = () => {
