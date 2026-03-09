@@ -1,11 +1,10 @@
-import {getTranslations, setRequestLocale} from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { ProfileContent } from "@/components/ProfileContent";
 
 export default async function Profile({params,}: { params: Promise<{ locale: string }>; }) {
     const {locale} = await params;
 
     setRequestLocale(locale);
 
-    const t = await getTranslations('UserProfilePage');
-
-    return (<div>{t('title')}</div>);
+    return <ProfileContent />;
 }

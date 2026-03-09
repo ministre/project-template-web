@@ -3,11 +3,13 @@
 import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { signIn } from "next-auth/react"
+import { useRouter } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { KeyRound, Loader2, Mail } from "lucide-react"
+import { useAuth } from "@/hooks/useAuth"
 
 interface FormErrors {
   email?: string
@@ -17,6 +19,8 @@ interface FormErrors {
 
 export function LoginForm() {
   const t = useTranslations("LoginPage")
+  const router = useRouter()
+  const { login } = useAuth()
   
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -68,10 +72,10 @@ export function LoginForm() {
         throw new Error(errorData.message || t("errors.loginFailed"))
       }
 
-      // Handle successful login - redirect or update state as needed
+      // Handle successful login - store token and user, then redirect
       const data = await response.json()
-      console.log("Login successful:", data)
-      // You can add redirect logic here
+      login(data.access, data.user)
+      router.push("/profile")
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : t("errors.loginFailed"),

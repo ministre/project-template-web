@@ -23,10 +23,16 @@
     }
   },
   "UserProfilePage": {
-    "title": "Профиль пользователя"
+    "title": "Профиль пользователя",
+    "username": "Имя пользователя",
+    "email": "Email",
+    "firstName": "Имя",
+    "lastName": "Фамилия"
   },
   "Navigation": {
     "home": "Главная",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "login": "Войти",
+    "logout": "Выйти"
   }
 }
