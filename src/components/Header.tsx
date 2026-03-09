@@ -25,13 +25,11 @@ export const Header = () => {
     useEffect(() => {
         // Check token on mount
         const token = localStorage.getItem("accessToken");
-        console.log("[v0] Header mount - token exists:", !!token);
         setHasToken(!!token);
         
         // Subscribe to changes
         const handleTokenChange = () => {
             const currentToken = localStorage.getItem("accessToken");
-            console.log("[v0] Token changed - token exists:", !!currentToken);
             setHasToken(!!currentToken);
         };
         
@@ -43,8 +41,6 @@ export const Header = () => {
             window.removeEventListener("tokenChanged", handleTokenChange);
         };
     }, []);
-    
-    console.log("[v0] Header render - hasToken:", hasToken);
 
     const handleLogout = async () => {
         // Clear localStorage first
@@ -94,31 +90,23 @@ export const Header = () => {
                 <div className='flex items-center gap-2'>
                     <SelectLanguage/>
                     <ThemeToggle/>
-                    {hasToken ? (
-                            <>
-                                <Link 
-                                    href='/profile' 
-                                    className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus:bg-primary-foreground/20 focus:outline-none dark:hover:bg-secondary dark:focus:bg-secondary"
-                                    aria-label={t("profile")}
-                                >
-                                    <User className="h-4 w-4" />
-                                </Link>
-                                <button
-                                    onClick={handleLogout}
-                                    className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus:bg-primary-foreground/20 focus:outline-none dark:hover:bg-secondary dark:focus:bg-secondary"
-                                    aria-label={t("logout")}
-                                >
-                                    <LogOut className="h-4 w-4" />
-                                </button>
-                            </>
-                        ) : (
+                    {hasToken && (
+                        <>
                             <Link 
-                                href='/login' 
+                                href='/profile' 
                                 className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus:bg-primary-foreground/20 focus:outline-none dark:hover:bg-secondary dark:focus:bg-secondary"
-                                aria-label={t("login")}
+                                aria-label={t("profile")}
                             >
                                 <User className="h-4 w-4" />
                             </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus:bg-primary-foreground/20 focus:outline-none dark:hover:bg-secondary dark:focus:bg-secondary"
+                                aria-label={t("logout")}
+                            >
+                                <LogOut className="h-4 w-4" />
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
