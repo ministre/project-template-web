@@ -42,6 +42,7 @@
     "refreshToken": "Refresh Token",
     "refreshing": "Refreshing...",
     "refreshSuccess": "Token refreshed successfully",
-    "refreshError": "Failed to refresh token"
+    "refreshError": "Failed to refresh token",
+    "tokenExpires": "Token expires"
   }
 }

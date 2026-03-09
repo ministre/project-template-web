@@ -42,6 +42,7 @@
     "refreshToken": "Обновить токен",
     "refreshing": "Обновление...",
     "refreshSuccess": "Токен успешно обновлен",
-    "refreshError": "Ошибка обновления токена"
+    "refreshError": "Ошибка обновления токена",
+    "tokenExpires": "Токен истекает"
   }
 }

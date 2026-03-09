@@ -58,7 +58,12 @@ function isTokenExpiringSoon(token: string, thresholdSeconds: number = 300): boo
   return (payload.exp - now) < thresholdSeconds
 }
 
-async function refreshAccessToken(): Promise<{ access: string } | null> {
+interface RefreshResponse {
+  access: string
+  access_expiration: string
+}
+
+async function refreshAccessToken(): Promise<RefreshResponse | null> {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL!, {
       method: "POST",
@@ -90,6 +95,7 @@ export function useAuth() {
 
   const clearAuth = useCallback(() => {
     localStorage.removeItem("accessToken")
+    localStorage.removeItem("accessTokenExpiration")
     localStorage.removeItem("user")
     setAuthState({
       user: null,
@@ -132,6 +138,9 @@ export function useAuth() {
     
     if (result?.access) {
       localStorage.setItem("accessToken", result.access)
+      if (result.access_expiration) {
+        localStorage.setItem("accessTokenExpiration", result.access_expiration)
+      }
       setAuthState({
         user,
         isAuthenticated: true,
@@ -166,7 +175,10 @@ export function useAuth() {
       
       if (result?.access) {
         localStorage.setItem("accessToken", result.access)
-        console.log("[v0] Token refreshed successfully")
+        if (result.access_expiration) {
+          localStorage.setItem("accessTokenExpiration", result.access_expiration)
+        }
+        console.log("[v0] Token refreshed successfully, expires:", result.access_expiration)
       } else {
         console.log("[v0] Token refresh failed, clearing auth")
         clearAuth()
