@@ -92,7 +92,7 @@ export function LoginForm() {
   const handleSSOLogin = async () => {
     setIsSSOLoading(true)
     try {
-      await signIn("keycloak", { callbackUrl: "/" })
+      await signIn("keycloak", { callbackUrl: "/auth/callback" })
     } catch (error) {
       console.error("SSO login error:", error)
       setIsSSOLoading(false)
