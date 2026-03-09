@@ -23,10 +23,16 @@
     }
   },
   "UserProfilePage": {
-    "title": "User Profile"
+    "title": "User Profile",
+    "username": "Username",
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name"
   },
   "Navigation": {
     "home": "Home",
-    "profile": "Profile"
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout"
   }
 }
