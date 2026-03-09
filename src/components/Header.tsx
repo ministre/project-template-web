@@ -74,14 +74,16 @@ export const Header = () => {
                                 </Link>
                             </NavigationMenuLink>
                         </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild>
-                                <Link href='/debug' className={navigationMenuTriggerStyle()}>
-                                    <Bug className="mr-2 h-4 w-4" />
-                                    {t("debug")}
-                                </Link>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
+                        {hasToken && (
+                            <NavigationMenuItem>
+                                <NavigationMenuLink asChild>
+                                    <Link href='/debug' className={navigationMenuTriggerStyle()}>
+                                        <Bug className="mr-2 h-4 w-4" />
+                                        {t("debug")}
+                                    </Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                        )}
                     </NavigationMenuList>
                 </NavigationMenu>
 
