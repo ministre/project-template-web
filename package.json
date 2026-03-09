@@ -9,9 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@auth/core": "^0.40.0",
-    "@base-ui/react": "^1.2.0",
-    "next-auth": "^5.0.0",
+    "@base-ui-components/react": "^1.0.0",
+    "next-auth": "5.0.0-beta.25",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
