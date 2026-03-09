@@ -4,7 +4,23 @@
     "test": "Кнопка"
   },
   "LoginPage": {
-    "title": "Авторизация"
+    "title": "Вход",
+    "description": "Введите свои учетные данные для доступа к аккаунту",
+    "email": "Email",
+    "emailPlaceholder": "Введите email",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "login": "Войти",
+    "loggingIn": "Вход...",
+    "ssoLogin": "Войти через SSO (Keycloak)",
+    "or": "или продолжить с",
+    "errors": {
+      "emailRequired": "Email обязателен",
+      "emailInvalid": "Введите корректный email адрес",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Пароль должен содержать минимум 6 символов",
+      "loginFailed": "Ошибка входа. Проверьте свои учетные данные."
+    }
   },
   "UserProfilePage": {
     "title": "Профиль пользователя"
