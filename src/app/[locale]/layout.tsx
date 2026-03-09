@@ -4,6 +4,7 @@ import {hasLocale, NextIntlClientProvider} from "next-intl";
 import {routing} from "@/i18n/routing";
 import {notFound} from "next/navigation";
 import {getMessages, setRequestLocale} from "next-intl/server";
+import {Providers} from "@/components/Providers";
 
 export const metadata: Metadata = {
     title: "Project Template",
@@ -43,9 +44,11 @@ export default async function RootLayout({children, params}: Props) {
             <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         </head>
         <body className="font-sans antialiased">
-        <NextIntlClientProvider messages={messages}>
+        <Providers>
+          <NextIntlClientProvider messages={messages}>
             {children}
-        </NextIntlClientProvider>
+          </NextIntlClientProvider>
+        </Providers>
         </body>
         </html>
     );
