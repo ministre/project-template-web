@@ -11,7 +11,7 @@ export default async function Home({params,}: { params: Promise<{ locale: string
     return (
         <div>
             <div>{t('title')}</div>
-            <div><Button>{t('test')}</Button></div>
+            <div><Button variant="outline">{t('test')}</Button></div>
         </div>
     );
 }
