@@ -29,20 +29,19 @@ export const Header = () => {
                                 </Link>
                             </NavigationMenuLink>
                         </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild>
-                                <Link href='/profile' className={navigationMenuTriggerStyle()}>
-                                    <User className="mr-2 h-4 w-4" />
-                                    {t("profile")}
-                                </Link>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
 
                 <div className='flex items-center gap-2'>
                     <SelectLanguage/>
                     <ThemeToggle/>
+                    <Link 
+                        href='/profile' 
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus:bg-primary-foreground/20 focus:outline-none dark:hover:bg-secondary dark:focus:bg-secondary"
+                        aria-label={t("profile")}
+                    >
+                        <User className="h-4 w-4" />
+                    </Link>
                 </div>
             </div>
         </header>
