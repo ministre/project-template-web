@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useTranslations } from "next-intl"
+import { useTranslations, useLocale } from "next-intl"
 import { signIn } from "next-auth/react"
 import { useRouter } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
@@ -19,6 +19,7 @@ interface FormErrors {
 
 export function LoginForm() {
   const t = useTranslations("LoginPage")
+  const locale = useLocale()
   const router = useRouter()
   const { login } = useAuth()
   
@@ -92,7 +93,7 @@ export function LoginForm() {
   const handleSSOLogin = async () => {
     setIsSSOLoading(true)
     try {
-      await signIn("keycloak", { callbackUrl: "/auth/callback" })
+      await signIn("keycloak", { callbackUrl: `/${locale}/auth/callback` })
     } catch (error) {
       console.error("SSO login error:", error)
       setIsSSOLoading(false)
