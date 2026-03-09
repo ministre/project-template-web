@@ -100,7 +100,6 @@ export function useAuth() {
 
   const validateAndRefreshToken = useCallback(async (): Promise<boolean> => {
     const accessToken = localStorage.getItem("accessToken")
-    const refreshToken = localStorage.getItem("refreshToken")
     const userJson = localStorage.getItem("user")
 
     // No tokens - not authenticated
