@@ -150,6 +150,32 @@ export function useAuth() {
     validateAndRefreshToken()
   }, [validateAndRefreshToken])
 
+  // Background token refresh
+  useEffect(() => {
+    const refreshInterval = parseInt(process.env.NEXT_PUBLIC_TOKEN_REFRESH_INTERVAL || "60000", 10)
+    
+    const intervalId = setInterval(async () => {
+      const accessToken = localStorage.getItem("accessToken")
+      
+      // Skip if no token (user not logged in)
+      if (!accessToken) return
+      
+      console.log("[v0] Background token refresh triggered")
+      
+      const result = await refreshAccessToken()
+      
+      if (result?.access) {
+        localStorage.setItem("accessToken", result.access)
+        console.log("[v0] Token refreshed successfully")
+      } else {
+        console.log("[v0] Token refresh failed, clearing auth")
+        clearAuth()
+      }
+    }, refreshInterval)
+    
+    return () => clearInterval(intervalId)
+  }, [clearAuth])
+
   // Check token on pathname change (navigation)
   useEffect(() => {
     const checkAuth = async () => {
