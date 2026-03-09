@@ -1,5 +1,6 @@
 "use client";
 
+import {useState, useEffect} from "react";
 import {Link, useRouter} from '@/i18n/navigation';
 import {SelectLanguage} from "@/components/SelectLanguage";
 import {ThemeToggle} from "@/components/ThemeToggle";
@@ -16,11 +17,35 @@ import {useAuth} from "@/hooks/useAuth";
 
 export const Header = () => {
     const t = useTranslations("Navigation");
-    const { isAuthenticated, logout, isLoading } = useAuth();
+    const { logout } = useAuth();
     const router = useRouter();
+    const [hasToken, setHasToken] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        const checkToken = () => {
+            const token = localStorage.getItem("accessToken");
+            setHasToken(!!token);
+        };
+        
+        checkToken();
+        
+        // Listen for storage changes (e.g., logout in another tab)
+        window.addEventListener("storage", checkToken);
+        
+        // Check periodically for token changes
+        const intervalId = setInterval(checkToken, 500);
+        
+        return () => {
+            window.removeEventListener("storage", checkToken);
+            clearInterval(intervalId);
+        };
+    }, []);
 
     const handleLogout = () => {
         logout();
+        setHasToken(false);
         router.push("/");
     };
     
@@ -43,8 +68,8 @@ export const Header = () => {
                 <div className='flex items-center gap-2'>
                     <SelectLanguage/>
                     <ThemeToggle/>
-                    {!isLoading && (
-                        isAuthenticated ? (
+                    {mounted && (
+                        hasToken ? (
                             <>
                                 <Link 
                                     href='/profile' 
