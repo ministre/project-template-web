@@ -25,11 +25,13 @@ export const Header = () => {
     useEffect(() => {
         // Check token on mount
         const token = localStorage.getItem("accessToken");
+        console.log("[v0] Header mount - token exists:", !!token);
         setHasToken(!!token);
         
         // Subscribe to changes
         const handleTokenChange = () => {
             const currentToken = localStorage.getItem("accessToken");
+            console.log("[v0] Token changed - token exists:", !!currentToken);
             setHasToken(!!currentToken);
         };
         
@@ -41,6 +43,8 @@ export const Header = () => {
             window.removeEventListener("tokenChanged", handleTokenChange);
         };
     }, []);
+    
+    console.log("[v0] Header render - hasToken:", hasToken);
 
     const handleLogout = async () => {
         // Clear localStorage first
