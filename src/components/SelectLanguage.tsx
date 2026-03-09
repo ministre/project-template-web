@@ -22,7 +22,7 @@ export const SelectLanguage = () => {
     return (
         <button
             onClick={toggleLanguage}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-primary-foreground/30 bg-background/90 text-foreground text-sm font-medium transition-colors hover:bg-background dark:border-border dark:bg-secondary dark:text-card-foreground dark:hover:bg-accent"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus:bg-primary-foreground/20 focus:outline-none dark:hover:bg-secondary dark:focus:bg-secondary"
         >
             {currentLocale.toUpperCase()}
         </button>
