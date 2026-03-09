@@ -3,27 +3,28 @@
 import {useLocale} from 'next-intl';
 import {usePathname, useRouter} from 'next/navigation';
 
+const languages = ['ru', 'en'] as const;
+
 export const SelectLanguage = () => {
     const router = useRouter();
     const pathName = usePathname();
     const currentLocale = useLocale();
 
-    const changeLanguage = (newLocale: string) => {
+    const toggleLanguage = () => {
+        const nextLocale = currentLocale === 'ru' ? 'en' : 'ru';
         const newPathname = pathName.replace(
             `/${currentLocale}`,
-            `/${newLocale}`
+            `/${nextLocale}`
         );
         router.push(newPathname);
     };
 
     return (
-        <select
-            onChange={e => changeLanguage(e.target.value)}
-            value={currentLocale}
-            className='rounded-md border border-gray-300 bg-white px-3 py-2 text-black dark:border-gray-600 dark:bg-black dark:text-white'
+        <button
+            onClick={toggleLanguage}
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-secondary text-sm font-medium transition-colors hover:bg-accent"
         >
-            <option value='ru'>Russian</option>
-            <option value='en'>English</option>
-        </select>
+            {currentLocale.toUpperCase()}
+        </button>
     );
 };
