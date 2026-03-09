@@ -11,7 +11,7 @@ import {
     NavigationMenuLink,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import {Home, User, LogOut} from "lucide-react";
+import {Home, User, LogOut, Bug} from "lucide-react";
 import {useTranslations} from "next-intl";
 import {useAuth} from "@/hooks/useAuth";
 
@@ -59,6 +59,14 @@ export const Header = () => {
                                 <Link href='/' className={navigationMenuTriggerStyle()}>
                                     <Home className="mr-2 h-4 w-4" />
                                     {t("home")}
+                                </Link>
+                            </NavigationMenuLink>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <NavigationMenuLink asChild>
+                                <Link href='/debug' className={navigationMenuTriggerStyle()}>
+                                    <Bug className="mr-2 h-4 w-4" />
+                                    {t("debug")}
                                 </Link>
                             </NavigationMenuLink>
                         </NavigationMenuItem>

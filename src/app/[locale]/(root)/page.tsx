@@ -1,22 +1,9 @@
-import {Button} from "@/components/ui/button";
-import {getTranslations, setRequestLocale} from "next-intl/server";
-import Link from "next/link";
+import { setRequestLocale } from "next-intl/server"
+import { HomeContent } from "@/components/HomeContent"
 
-export default async function Home({params,}: { params: Promise<{ locale: string }>; }) {
-    const {locale} = await params;
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  setRequestLocale(locale)
 
-    setRequestLocale(locale);
-
-    const t = await getTranslations('HomePage');
-
-    return (
-        <div>
-            <div>{t('title')}</div>
-            <div>
-                <Link href={`/${locale}/login`}>
-                    <Button variant="outline">{t('login')}</Button>
-                </Link>
-            </div>
-        </div>
-    );
+  return <HomeContent />
 }
