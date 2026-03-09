@@ -64,6 +64,7 @@ export function LoginForm() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Allow backend to set HTTP-only cookies
         body: JSON.stringify({ email, password }),
       })
 
@@ -72,9 +73,10 @@ export function LoginForm() {
         throw new Error(errorData.message || t("errors.loginFailed"))
       }
 
-      // Handle successful login - store tokens and user, then redirect
+      // Handle successful login - store access token and user, then redirect
+      // Refresh token is stored in HTTP-only cookie by the backend
       const data = await response.json()
-      login(data.access, data.refresh, data.user)
+      login(data.access, data.user)
       router.push("/profile")
     } catch (error) {
       setErrors({

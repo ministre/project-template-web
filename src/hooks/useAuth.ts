@@ -58,14 +58,14 @@ function isTokenExpiringSoon(token: string, thresholdSeconds: number = 300): boo
   return (payload.exp - now) < thresholdSeconds
 }
 
-async function refreshAccessToken(refreshToken: string): Promise<{ access: string } | null> {
+async function refreshAccessToken(): Promise<{ access: string } | null> {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL!, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ refresh: refreshToken }),
+      credentials: "include", // Send HTTP-only cookies with request
     })
 
     if (!response.ok) {
@@ -90,7 +90,6 @@ export function useAuth() {
 
   const clearAuth = useCallback(() => {
     localStorage.removeItem("accessToken")
-    localStorage.removeItem("refreshToken")
     localStorage.removeItem("user")
     setAuthState({
       user: null,
@@ -101,7 +100,6 @@ export function useAuth() {
 
   const validateAndRefreshToken = useCallback(async (): Promise<boolean> => {
     const accessToken = localStorage.getItem("accessToken")
-    const refreshToken = localStorage.getItem("refreshToken")
     const userJson = localStorage.getItem("user")
 
     // No tokens - not authenticated
@@ -129,19 +127,17 @@ export function useAuth() {
       return true
     }
 
-    // Access token expired or expiring soon - try to refresh
-    if (refreshToken && !isTokenExpired(refreshToken)) {
-      const result = await refreshAccessToken(refreshToken)
-      
-      if (result?.access) {
-        localStorage.setItem("accessToken", result.access)
-        setAuthState({
-          user,
-          isAuthenticated: true,
-          isLoading: false,
-        })
-        return true
-      }
+    // Access token expired or expiring soon - try to refresh using HTTP-only cookie
+    const result = await refreshAccessToken()
+    
+    if (result?.access) {
+      localStorage.setItem("accessToken", result.access)
+      setAuthState({
+        user,
+        isAuthenticated: true,
+        isLoading: false,
+      })
+      return true
     }
 
     // Could not refresh - clear auth
@@ -173,9 +169,8 @@ export function useAuth() {
     checkAuth()
   }, [pathname, validateAndRefreshToken, router])
 
-  const login = useCallback((accessToken: string, refreshToken: string, user: User) => {
+  const login = useCallback((accessToken: string, user: User) => {
     localStorage.setItem("accessToken", accessToken)
-    localStorage.setItem("refreshToken", refreshToken)
     localStorage.setItem("user", JSON.stringify(user))
     setAuthState({
       user,
