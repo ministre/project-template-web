@@ -72,9 +72,9 @@ export function LoginForm() {
         throw new Error(errorData.message || t("errors.loginFailed"))
       }
 
-      // Handle successful login - store token and user, then redirect
+      // Handle successful login - store tokens and user, then redirect
       const data = await response.json()
-      login(data.access, data.user)
+      login(data.access, data.refresh, data.user)
       router.push("/profile")
     } catch (error) {
       setErrors({
