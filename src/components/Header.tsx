@@ -17,7 +17,7 @@ export const Header = () => {
     const t = useTranslations("Navigation");
     
     return (
-        <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-primary text-primary-foreground dark:bg-background/95 dark:text-foreground backdrop-blur supports-[backdrop-filter]:dark:bg-background/60'>
+        <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-primary text-primary-foreground dark:bg-primary dark:text-primary-foreground'>
             <div className='flex h-12 w-full items-center justify-between px-4'>
                 <NavigationMenu>
                     <NavigationMenuList>
