@@ -1,19 +1,19 @@
 {
   "HomePage": {
     "title": "Домашняя страница",
-    "test": "Кнопка"
+    "login": "Войти"
   },
   "LoginPage": {
     "title": "Вход",
-    "description": "Введите свои учетные данные для доступа к аккаунту",
+    "description": "Введите свои учетные данные",
     "email": "Email",
     "emailPlaceholder": "Введите email",
     "password": "Пароль",
     "passwordPlaceholder": "Введите пароль",
     "login": "Войти",
     "loggingIn": "Вход...",
-    "ssoLogin": "Войти через SSO (Keycloak)",
-    "or": "или продолжить с",
+    "ssoLogin": "Войти через SSO",
+    "or": "или",
     "errors": {
       "emailRequired": "Email обязателен",
       "emailInvalid": "Введите корректный email адрес",

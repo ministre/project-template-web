@@ -14,7 +14,7 @@ export default async function Home({params,}: { params: Promise<{ locale: string
             <div>{t('title')}</div>
             <div>
                 <Link href={`/${locale}/login`}>
-                    <Button variant="outline">{t('test')}</Button>
+                    <Button variant="outline">{t('login')}</Button>
                 </Link>
             </div>
         </div>
