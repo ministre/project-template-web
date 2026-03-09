@@ -12,7 +12,7 @@ export default async function RootLayout({
     return (
         <div className='min-h-screen'>
             <Header/>
-            <main className='w-full px-4'>{children}</main>
+            <main className='w-full px-4 py-4'>{children}</main>
         </div>
     );
 }
