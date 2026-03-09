@@ -22,7 +22,7 @@ export const SelectLanguage = () => {
     return (
         <button
             onClick={toggleLanguage}
-            className="rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium text-card-foreground transition-colors hover:bg-accent"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-secondary text-sm font-medium transition-colors hover:bg-accent"
         >
             {currentLocale.toUpperCase()}
         </button>
