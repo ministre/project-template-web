@@ -77,7 +77,11 @@ export function LoginForm() {
       // Handle successful login - store access token and user, then redirect
       // Refresh token is stored in HTTP-only cookie by the backend
       const data = await response.json()
-      login(data.access, data.user)
+      login(data.access, data.user, "api")
+      
+      // Dispatch event to update header immediately
+      window.dispatchEvent(new Event("tokenChanged"))
+      
       router.push("/profile")
     } catch (error) {
       setErrors({
