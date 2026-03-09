@@ -3,6 +3,9 @@
     "title": "Home Page",
     "test": "Button"
   },
+  "LoginPage": {
+    "title": "Login"
+  },
   "UserProfilePage": {
     "title": "User Profile"
   },
