@@ -103,17 +103,17 @@ export function DebugContent() {
               </div>
             )}
             
-            {tokenExpiration && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{t("tokenExpires")}: {formatDateTime(tokenExpiration)}</span>
-              </div>
-            )}
-            
             {lastTokenRefresh && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <History className="h-4 w-4" />
                 <span>{t("lastRefresh")}: {formatDateTime(lastTokenRefresh)}</span>
+              </div>
+            )}
+            
+            {tokenExpiration && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>{t("tokenExpires")}: {formatDateTime(tokenExpiration)}</span>
               </div>
             )}
             
