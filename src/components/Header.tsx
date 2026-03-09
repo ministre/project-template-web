@@ -2,6 +2,7 @@
 
 import {useState, useEffect} from "react";
 import {Link, useRouter} from '@/i18n/navigation';
+import {signOut} from "next-auth/react";
 import {SelectLanguage} from "@/components/SelectLanguage";
 import {ThemeToggle} from "@/components/ThemeToggle";
 import {
@@ -12,22 +13,24 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {Home, User, LogOut, Bug} from "lucide-react";
-import {useTranslations} from "next-intl";
+import {useTranslations, useLocale} from "next-intl";
 
 export const Header = () => {
     const t = useTranslations("Navigation");
+    const locale = useLocale();
     const router = useRouter();
-    const [mounted, setMounted] = useState(false);
+    // Default to false - only show profile when token exists
     const [hasToken, setHasToken] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
         // Check token on mount
-        setHasToken(!!localStorage.getItem("accessToken"));
+        const token = localStorage.getItem("accessToken");
+        setHasToken(!!token);
         
         // Subscribe to changes
         const handleTokenChange = () => {
-            setHasToken(!!localStorage.getItem("accessToken"));
+            const currentToken = localStorage.getItem("accessToken");
+            setHasToken(!!currentToken);
         };
         
         window.addEventListener("storage", handleTokenChange);
@@ -39,12 +42,22 @@ export const Header = () => {
         };
     }, []);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        // Clear localStorage first
         localStorage.removeItem("accessToken");
         localStorage.removeItem("accessTokenExpiration");
         localStorage.removeItem("user");
-        // Dispatch custom event for same-tab updates
+        
+        // Update state immediately
+        setHasToken(false);
+        
+        // Dispatch custom event for other components
         window.dispatchEvent(new Event("tokenChanged"));
+        
+        // Sign out from NextAuth (clears HTTP-only cookies)
+        await signOut({ redirect: false });
+        
+        // Redirect to login
         router.push("/login");
     };
     
@@ -75,8 +88,7 @@ export const Header = () => {
                 <div className='flex items-center gap-2'>
                     <SelectLanguage/>
                     <ThemeToggle/>
-                    {mounted && (
-                        hasToken ? (
+                    {hasToken ? (
                             <>
                                 <Link 
                                     href='/profile' 
@@ -101,7 +113,6 @@ export const Header = () => {
                             >
                                 <User className="h-4 w-4" />
                             </Link>
-                        )
                     )}
                 </div>
             </div>
