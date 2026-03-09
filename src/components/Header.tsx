@@ -13,40 +13,39 @@ import {
 } from "@/components/ui/navigation-menu";
 import {Home, User, LogOut, Bug} from "lucide-react";
 import {useTranslations} from "next-intl";
-import {useAuth} from "@/hooks/useAuth";
 
 export const Header = () => {
     const t = useTranslations("Navigation");
-    const { logout } = useAuth();
     const router = useRouter();
-    const [hasToken, setHasToken] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [hasToken, setHasToken] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-        const checkToken = () => {
-            const token = localStorage.getItem("accessToken");
-            setHasToken(!!token);
+        // Check token on mount
+        setHasToken(!!localStorage.getItem("accessToken"));
+        
+        // Subscribe to changes
+        const handleTokenChange = () => {
+            setHasToken(!!localStorage.getItem("accessToken"));
         };
         
-        checkToken();
-        
-        // Listen for storage changes (e.g., logout in another tab)
-        window.addEventListener("storage", checkToken);
-        
-        // Check periodically for token changes
-        const intervalId = setInterval(checkToken, 500);
+        window.addEventListener("storage", handleTokenChange);
+        window.addEventListener("tokenChanged", handleTokenChange);
         
         return () => {
-            window.removeEventListener("storage", checkToken);
-            clearInterval(intervalId);
+            window.removeEventListener("storage", handleTokenChange);
+            window.removeEventListener("tokenChanged", handleTokenChange);
         };
     }, []);
 
     const handleLogout = () => {
-        logout();
-        setHasToken(false);
-        router.push("/");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("accessTokenExpiration");
+        localStorage.removeItem("user");
+        // Dispatch custom event for same-tab updates
+        window.dispatchEvent(new Event("tokenChanged"));
+        router.push("/login");
     };
     
     return (
