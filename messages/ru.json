@@ -44,6 +44,8 @@
     "refreshing": "Обновление...",
     "refreshSuccess": "Токен успешно обновлен",
     "refreshError": "Ошибка обновления токена",
-    "tokenExpires": "Токен истекает"
+    "tokenExpires": "Токен истекает",
+    "authMethod": "Метод авторизации",
+    "lastRefresh": "Последнее обновление"
   }
 }

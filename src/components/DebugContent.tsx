@@ -4,35 +4,11 @@ import { useState, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { RefreshCw, Clock, Key } from "lucide-react"
+import { RefreshCw, Clock, Key, Shield, History } from "lucide-react"
+import { refreshAccessToken, getAuthMethod, type AuthMethod } from "@/hooks/useAuth"
 import { AuthGuard } from "@/components/AuthGuard"
 
-interface RefreshResponse {
-  access: string
-  access_expiration: string
-}
-
-async function refreshAccessToken(): Promise<RefreshResponse | null> {
-  try {
-    const response = await fetch(process.env.NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL!, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-
-    if (!response.ok) {
-      return null
-    }
-
-    return await response.json()
-  } catch {
-    return null
-  }
-}
-
-function formatExpiration(isoDate: string): string {
+function formatDateTime(isoDate: string): string {
   const date = new Date(isoDate)
   return date.toLocaleString()
 }
@@ -43,15 +19,26 @@ export function DebugContent() {
   const [lastRefreshStatus, setLastRefreshStatus] = useState<"success" | "error" | null>(null)
   const [tokenExpiration, setTokenExpiration] = useState<string | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [authMethod, setAuthMethod] = useState<AuthMethod | null>(null)
+  const [lastTokenRefresh, setLastTokenRefresh] = useState<string | null>(null)
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken")
     const expiration = localStorage.getItem("accessTokenExpiration")
+    const method = getAuthMethod()
+    const lastRefresh = localStorage.getItem("lastTokenRefresh")
+    
     if (token) {
       setAccessToken(token)
     }
     if (expiration) {
       setTokenExpiration(expiration)
+    }
+    if (method) {
+      setAuthMethod(method)
+    }
+    if (lastRefresh) {
+      setLastTokenRefresh(lastRefresh)
     }
   }, [])
 
@@ -59,9 +46,10 @@ export function DebugContent() {
     setIsRefreshing(true)
     setLastRefreshStatus(null)
     
-    console.log("[Debug] Manual token refresh triggered")
+    const currentAuthMethod = getAuthMethod()
+    console.log("[Debug] Manual token refresh triggered, method:", currentAuthMethod)
     
-    const result = await refreshAccessToken()
+    const result = await refreshAccessToken(currentAuthMethod)
     
     if (result?.access) {
       localStorage.setItem("accessToken", result.access)
@@ -70,6 +58,12 @@ export function DebugContent() {
         localStorage.setItem("accessTokenExpiration", result.access_expiration)
         setTokenExpiration(result.access_expiration)
       }
+      
+      // Save and display last refresh time
+      const refreshTime = new Date().toISOString()
+      localStorage.setItem("lastTokenRefresh", refreshTime)
+      setLastTokenRefresh(refreshTime)
+      
       console.log("[Debug] Token refreshed successfully:", result.access.substring(0, 20) + "...")
       console.log("[Debug] Token expires at:", result.access_expiration)
       setLastRefreshStatus("success")
@@ -102,10 +96,24 @@ export function DebugContent() {
               </div>
             )}
             
+            {authMethod && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Shield className="h-4 w-4" />
+                <span>{t("authMethod")}: <span className="font-medium text-foreground uppercase">{authMethod}</span></span>
+              </div>
+            )}
+            
             {tokenExpiration && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
-                <span>{t("tokenExpires")}: {formatExpiration(tokenExpiration)}</span>
+                <span>{t("tokenExpires")}: {formatDateTime(tokenExpiration)}</span>
+              </div>
+            )}
+            
+            {lastTokenRefresh && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <History className="h-4 w-4" />
+                <span>{t("lastRefresh")}: {formatDateTime(lastTokenRefresh)}</span>
               </div>
             )}
             
