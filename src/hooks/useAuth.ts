@@ -114,7 +114,7 @@ async function refreshSsoToken(): Promise<RefreshResponse | null> {
     if (session?.accessToken) {
       return {
         access: session.accessToken,
-        access_expiration: "", // SSO doesn't provide expiration in same format
+        access_expiration: session.expires || "", // SSO provides expiration in "expires" field
       }
     }
     
