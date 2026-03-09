@@ -40,7 +40,7 @@ export const ThemeToggle = () => {
         // Show sun icon (dark mode default) to prevent flash
         return (
             <button
-                className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-secondary transition-colors hover:bg-accent"
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-primary-foreground/30 bg-background/90 text-foreground transition-colors hover:bg-background dark:border-border dark:bg-secondary dark:text-card-foreground dark:hover:bg-accent"
                 aria-label="Toggle theme"
             >
                 <svg
@@ -70,7 +70,7 @@ export const ThemeToggle = () => {
     return (
         <button
             onClick={toggleTheme}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-secondary transition-colors hover:bg-accent"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-primary-foreground/30 bg-background/90 text-foreground transition-colors hover:bg-background dark:border-border dark:bg-secondary dark:text-card-foreground dark:hover:bg-accent"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
             {isDark ? (
