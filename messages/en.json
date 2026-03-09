@@ -39,6 +39,7 @@
   "DebugPage": {
     "title": "Debug",
     "description": "Debugging tools",
+    "accessToken": "Access Token",
     "refreshToken": "Refresh Token",
     "refreshing": "Refreshing...",
     "refreshSuccess": "Token refreshed successfully",

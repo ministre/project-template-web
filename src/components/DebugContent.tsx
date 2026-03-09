@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { RefreshCw, Clock } from "lucide-react"
+import { RefreshCw, Clock, Key } from "lucide-react"
 import { AuthGuard } from "@/components/AuthGuard"
 
 interface RefreshResponse {
@@ -42,9 +42,14 @@ export function DebugContent() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [lastRefreshStatus, setLastRefreshStatus] = useState<"success" | "error" | null>(null)
   const [tokenExpiration, setTokenExpiration] = useState<string | null>(null)
+  const [accessToken, setAccessToken] = useState<string | null>(null)
 
   useEffect(() => {
+    const token = localStorage.getItem("accessToken")
     const expiration = localStorage.getItem("accessTokenExpiration")
+    if (token) {
+      setAccessToken(token)
+    }
     if (expiration) {
       setTokenExpiration(expiration)
     }
@@ -60,6 +65,7 @@ export function DebugContent() {
     
     if (result?.access) {
       localStorage.setItem("accessToken", result.access)
+      setAccessToken(result.access)
       if (result.access_expiration) {
         localStorage.setItem("accessTokenExpiration", result.access_expiration)
         setTokenExpiration(result.access_expiration)
@@ -84,6 +90,18 @@ export function DebugContent() {
             <CardDescription>{t("description")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {accessToken && (
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Key className="h-4 w-4 shrink-0" />
+                  <span>{t("accessToken")}:</span>
+                </div>
+                <div className="rounded bg-muted p-2 text-xs font-mono break-all max-h-24 overflow-y-auto">
+                  {accessToken}
+                </div>
+              </div>
+            )}
+            
             {tokenExpiration && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
