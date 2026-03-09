@@ -83,7 +83,7 @@ export function DebugContent() {
 
   return (
     <AuthGuard>
-      <div className="container mx-auto p-6">
+      <div className="py-4">
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>{t("title")}</CardTitle>
