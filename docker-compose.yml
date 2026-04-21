@@ -6,22 +6,35 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - 3000
     environment:
-      - NODE_ENV=production
-      - AUTH_SECRET=${AUTH_SECRET}
-      - AUTH_TRUST_HOST=${AUTH_TRUST_HOST}
-      # - AUTH_URL=${AUTH_URL:-http://localhost:3000}
-      - NEXT_PUBLIC_AUTH_LOGIN_URL=${NEXT_PUBLIC_AUTH_LOGIN_URL}
-      - NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL=${NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL}
-      - NEXT_PUBLIC_TOKEN_REFRESH_INTERVAL=${NEXT_PUBLIC_TOKEN_REFRESH_INTERVAL}
-      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
-      - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
-      - KEYCLOAK_ISSUER=${KEYCLOAK_ISSUER}
+      NODE_ENV: production
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_TRUST_HOST: ${AUTH_TRUST_HOST}
+      # AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      NEXT_PUBLIC_AUTH_LOGIN_URL: ${NEXT_PUBLIC_AUTH_LOGIN_URL}
+      NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL: ${NEXT_PUBLIC_AUTH_TOKEN_REFRESH_URL}
+      NEXT_PUBLIC_TOKEN_REFRESH_INTERVAL: ${NEXT_PUBLIC_TOKEN_REFRESH_INTERVAL}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      KEYCLOAK_ISSUER: ${KEYCLOAK_ISSUER}
     networks:
-      - app-network
+      - traefik
+    healthcheck:
+      test: [ "CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.project-template-web.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.project-template-web.tls.certresolver=letsEncrypt
+      - traefik.http.services.project-template-web.loadbalancer.server.port=3000
 
 networks:
-  app-network:
-    driver: bridge
+  traefik:
+    external: true
