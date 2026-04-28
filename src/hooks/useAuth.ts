@@ -227,8 +227,6 @@ export function useAuth() {
       if (!accessToken) return
       
       const authMethod = getAuthMethod()
-      console.log("[v0] Background token refresh triggered, method:", authMethod)
-      
       const result = await refreshAccessToken(authMethod)
       
       if (result?.access) {
@@ -237,9 +235,7 @@ export function useAuth() {
           localStorage.setItem("accessTokenExpiration", result.access_expiration)
         }
         saveLastRefreshTime()
-        console.log("[v0] Token refreshed successfully, expires:", result.access_expiration)
       } else {
-        console.log("[v0] Token refresh failed, clearing auth")
         clearAuth()
       }
     }, refreshInterval)
