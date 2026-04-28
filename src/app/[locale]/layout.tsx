@@ -30,7 +30,7 @@ export default async function RootLayout({children, params}: Props) {
     const messages = await getMessages();
 
     return (
-        <html lang={locale} suppressHydrationWarning>
+        <html lang={locale} suppressHydrationWarning className="bg-background">
         <head>
             <script
                 suppressHydrationWarning
