@@ -29,19 +29,15 @@ export default async function RootLayout({children, params}: Props) {
 
     const messages = await getMessages();
 
-    const themeScript = `
-      (function() {
-        var theme = localStorage.getItem('theme');
-        if (theme !== 'light') {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    `;
-
     return (
         <html lang={locale} suppressHydrationWarning>
         <head>
-            <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+            <script
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{
+                    __html: `(function(){var t=localStorage.getItem('theme');if(t!=='light')document.documentElement.classList.add('dark')})();`
+                }}
+            />
         </head>
         <body className="font-sans antialiased">
         <Providers>
