@@ -16,7 +16,6 @@ export function SSOCallback() {
       // Save token and user to localStorage
       if (session.accessToken) {
         localStorage.setItem("accessToken", session.accessToken)
-        console.log("[v0] SSO: Access token saved to localStorage")
       }
       
       if (session.user) {
@@ -27,13 +26,11 @@ export function SSOCallback() {
           last_name: session.user.name?.split(" ").slice(1).join(" ") || "",
         }
         localStorage.setItem("user", JSON.stringify(user))
-        console.log("[v0] SSO: User data saved to localStorage")
       }
       
       // Save auth method and last refresh time
       localStorage.setItem("authMethod", "sso")
       localStorage.setItem("lastTokenRefresh", new Date().toISOString())
-      console.log("[v0] SSO: Auth method saved as 'sso'")
 
       // Dispatch event to update header
       window.dispatchEvent(new Event("tokenChanged"))
